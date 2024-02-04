@@ -1,22 +1,23 @@
-g_board_size = 1.5 -- 1: occupies 1/4th of the screen, 2: full screen
-spr_w = 16 * g_board_size
-
+-- g_board_size = 1.5 -- 1: occupies 1/4th of the screen, 2: full screen
+spr_w = 24
+board_pading = 2
+spr_sep = 1
 
 Board=Class:new({
     _letters = {},
 
     init=function(_ENV)
-        log("init board")
+        -- log("init board")
         for row=1, 4 do
             for col=1, 4 do
-                add(_letters, Letter:new({_x=(col - 1) * (spr_w + 1) + 1, _y=(row - 1) * (spr_w + 1) + 1}))
+                add(_letters, Letter:new({_x=(col - 1) * (spr_w + spr_sep) + board_pading, _y=(row - 1) * (spr_w + spr_sep) + board_pading}))
             end
         end
         randomize_letters(_ENV)
     end,
 
     randomize_letters=function(_ENV)
-        log("randomize")
+        -- log("randomize")
         letter_list = generate_boggle_board()
         for i, letter in ipairs(_letters) do
             letter:set_letter(letter_list[i])

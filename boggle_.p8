@@ -7,10 +7,10 @@ __lua__
 #include class.lua
 #include letter.lua
 #include board.lua
-#include main.lua
 #include utils.lua
 #include button.lua
--- #include menu.lua
+#include toolbar.lua
+#include main.lua
 -- #include leaderboard.lua
 
 --clear log

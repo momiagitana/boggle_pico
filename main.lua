@@ -3,13 +3,14 @@
 function _init()
     b = Board:new()
     b:init()
-
-    button = Button:new({_x=70, _y=10, _text="a"})
+    tlb = Toolbar:new()
+    -- button = Button:new({_x=70, _y=10, _text="a"})
 end
 
 function _draw()
     cls(1)
     b:draw()
+    tlb:draw()
     -- button:draw()
 
     -- scale_text("abcdqrst",2,2,7,4)
@@ -27,8 +28,20 @@ function _draw()
 end
 
 function _update()
-    if btnp(❎) then
-        button._selected = not button._selected
+    if btnp(2) then
+        tlb:move("up")
     end
+    if btnp(3) then
+        tlb:move("down")
+    end
+
+    if btnp(❎) then
+        res = tlb:handle_press()
+        if res == 'new' then
+            b:randomize_letters()
+        elseif res == 'last' then
+        end
+    end
+
 end
 
