@@ -1,13 +1,27 @@
 
-Letter=class:new({
+Letter=Class:new({
     _letter = 'A',
     _x = 0,
     _y = 0,
 
     draw=function(_ENV)
+        palt(0, false)
         -- spr(letter_to_sprite_num(_letter), _x, _y, 2, 2)
-        spr_x, spr_y = letter_to_sprite_coords(_letter)
-        sspr(spr_x, spr_y, 16, 16, _x, _y, l_w, l_w)
+
+        -- spr_x, spr_y = letter_to_sprite_coords(_letter)
+        -- sspr(spr_x, spr_y, 16, 16, _x, _y, spr_w, spr_w)
+
+        -- spr(0, _x, _y, 1.5, 1.5)
+        sspr(0, 96, 24, 24, _x, _y, 24, 24)
+        l_spr_data = get_letter_data(_letter)
+        -- l_spr_data = get_letter_data("Z")
+        sx = l_spr_data.x
+        sy = l_spr_data.y
+        sw = l_spr_data.w
+        sh = l_spr_data.h
+        sspr(sx, sy, sw, sh, _x + ((24 - sw) / 2), _y + ((24 - sh) / 2))
+        -- sspr(1, 1, 10, 14, _x, _y)
+        palt(0, true)
     end,
 
     set_letter=function(_ENV, letter)
@@ -16,18 +30,59 @@ Letter=class:new({
     end,
 })
 
-function letter_to_sprite_num(letter)
-    letter_num = (ord(letter) - ord('A'))
-    if (letter == '$') letter_num = ord('Z') - ord('A') + 1 -- special case for Ñ
-    row = letter_num \ 8 -- 8 = letters per line of sprites
-    col = letter_num % 8
-    return (row * 32) + (col * 2)
+function get_letter_data(letter)
+    index = ord(letter) - ord('A') + 1
+    if letter == 'Ñ' then
+        index = ord('N') - ord('A') + 2
+    elseif ord(letter) > ord('N') then
+        index += 1
+    end
+    return l_spr_data[index]
 end
 
-function letter_to_sprite_coords(letter)
-    letter_num = (ord(letter) - ord('A'))
-    if (letter == '$') letter_num = ord('Z') - ord('A') + 1 -- special case for Ñ
-    row = letter_num \ 8 -- 8 = letters per line of sprites
-    col = letter_num % 8
-    return (col * 16), (row * 16)
-end
+l_spr_data = {
+    {x=1, y=1, w=10, h=14},     --a
+    {x=12, y=1, w=10, h=14},    --b
+    {x=23, y=1, w=9, h=14},     --c
+    {x=33, y=1, w=11, h=14},    --d
+    {x=45, y=1, w=9, h=14},     --e
+    {x=55, y=1, w=9, h=14},     --f
+    {x=65, y=1, w=9, h=14},     --g
+    {x=75, y=1, w=10, h=14},    --h
+    {x=86, y=1, w=8, h=14},     --i
+    {x=95, y=1, w=10, h=14},    --j
+    {x=106, y=1, w=10, h=14},   --k
+    {x=117, y=1, w=9, h=14},    --l
+    {x=1, y=16, w=10, h=14},    --m
+    {x=12, y=16, w=10, h=14},   --n
+    {x=23, y=16, w=10, h=16},   --ñ
+    {x=34, y=16, w=11, h=14},   --o
+    {x=46, y=16, w=9, h=14},    --p
+    {x=56, y=16, w=18, h=16},   --qu
+    {x=75, y=16, w=9, h=14},    --r
+    {x=85, y=16, w=9, h=14},    --s
+    {x=95, y=16, w=10, h=14},   --t
+    {x=106, y=16, w=11, h=14},  --u
+    {x=118, y=16, w=10, h=14},  --v
+    {x=1, y=33, w=10, h=14},    --w
+    {x=12, y=33, w=11, h=14},   --x
+    {x=24, y=33, w=8, h=14},    --y
+    {x=33, y=33, w=11, h=14},   --z
+}
+
+
+-- function letter_to_sprite_num(letter)
+--     letter_num = (ord(letter) - ord('A'))
+--     if (letter == '$') letter_num = ord('Z') - ord('A') + 1 -- special case for Ñ
+--     row = letter_num \ 8 -- 8 = letters per line of sprites
+--     col = letter_num % 8
+--     return (row * 32) + (col * 2)
+-- end
+
+-- function letter_to_sprite_coords(letter)
+--     letter_num = (ord(letter) - ord('A'))
+--     if (letter == '$') letter_num = ord('Z') - ord('A') + 1 -- special case for Ñ
+--     row = letter_num \ 8 -- 8 = letters per line of sprites
+--     col = letter_num % 8
+--     return (col * 16), (row * 16)
+-- end

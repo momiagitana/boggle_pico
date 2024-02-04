@@ -1,6 +1,6 @@
 global = _ENV
 
-class=setmetatable({
+Class=setmetatable({
     new=function(self, tbl)
         tbl=tbl or {}
         setmetatable(tbl,{
@@ -11,5 +11,5 @@ class=setmetatable({
 },{__index=_ENV})
 
 
-entity=class:new({
+Entity=Class:new({
 })

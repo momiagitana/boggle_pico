@@ -1,20 +1,22 @@
-g_board_size = 2 -- 1: occupies 1/4th of the screen, 2: full screen
-l_w = 16 * g_board_size
+g_board_size = 1.5 -- 1: occupies 1/4th of the screen, 2: full screen
+spr_w = 16 * g_board_size
 
 
-Board=class:new({
+Board=Class:new({
     _letters = {},
 
     init=function(_ENV)
+        log("init board")
         for row=1, 4 do
             for col=1, 4 do
-                add(_letters, Letter:new({_x=(col - 1) * l_w, _y=(row - 1) * l_w}))
+                add(_letters, Letter:new({_x=(col - 1) * (spr_w + 1) + 1, _y=(row - 1) * (spr_w + 1) + 1}))
             end
         end
         randomize_letters(_ENV)
     end,
 
     randomize_letters=function(_ENV)
+        log("randomize")
         letter_list = generate_boggle_board()
         for i, letter in ipairs(_letters) do
             letter:set_letter(letter_list[i])
@@ -67,7 +69,7 @@ dice_faces = {
     {'E', 'O', 'A', 'C', 'S', 'N'},
     {'S', 'L', 'E', 'C', 'O', 'P'},
     {'I', 'G', 'N', 'T', 'U', 'A'},
-    {'E', 'S', 'A', 'O', '$', 'D'},
+    {'E', 'S', 'A', 'O', 'Ñ', 'D'},
     {'L', 'S', 'J', 'V', 'N', 'O'},
     {'A', 'R', 'E', 'L', 'B', 'A'},
     {'F', 'C', 'R', 'T', 'N', 'I'},
