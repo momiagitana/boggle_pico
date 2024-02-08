@@ -1,32 +1,54 @@
 
 Letter=Class:new({
     _letter = 'A',
+    _row = 0,
+    _col = 0,
     _x = 0,
     _y = 0,
+    _full_screen_x = 0,
+    _full_screen_y = 0,
+    _sx = 0,
+    _sy = 0,
+    _sw = 0,
+    _sh = 0,
+
+    init=function(_ENV)
+        --init x,y for small board
+        _x = (_col - 1) * (spr_w + spr_sep) + board_pading
+        _y = (_row - 1) * (spr_w + spr_sep) + board_pading
+        --init x,y for small board
+        _full_screen_x = (_col - 1) * 32
+        _full_screen_y = (_row - 1) * 32
+        --init sprite letter data
+        l_spr_data = get_letter_data(_letter)
+        _sx = l_spr_data.x
+        _sy = l_spr_data.y
+        _sw = l_spr_data.w
+        _sh = l_spr_data.h
+    end,
 
     draw=function(_ENV)
         palt(0, false)
-        -- spr(letter_to_sprite_num(_letter), _x, _y, 2, 2)
-
-        -- spr_x, spr_y = letter_to_sprite_coords(_letter)
-        -- sspr(spr_x, spr_y, 16, 16, _x, _y, spr_w, spr_w)
-
-        -- spr(0, _x, _y, 1.5, 1.5)
+        palt(2, true)
         sspr(0, 96, 24, 24, _x, _y, 24, 24)
-        l_spr_data = get_letter_data(_letter)
-        -- l_spr_data = get_letter_data("Z")
-        sx = l_spr_data.x
-        sy = l_spr_data.y
-        sw = l_spr_data.w
-        sh = l_spr_data.h
-        sspr(sx, sy, sw, sh, _x + ((24 - sw) / 2), _y + ((24 - sh) / 2))
-        -- sspr(1, 1, 10, 14, _x, _y)
+        sspr(_sx, _sy, _sw, _sh, _x + ((24 - _sw) / 2), _y + ((24 - _sh) / 2))
         palt(0, true)
+        palt(2, false)
+    end,
+
+    draw_fs=function(_ENV)
+        palt(0, false)
+        palt(2, true)
+        sspr(0, 96, 24, 24, _full_screen_x, _full_screen_y, 32, 32)
+        sspr(_sx, _sy, _sw, _sh, _full_screen_x + ((32 - _sw*1.5) / 2), _full_screen_y + ((32 - _sh*1.5) / 2), _sw*1.5, _sh*1.5)
+        palt(0, true)
+        palt(2, false)
     end,
 
     set_letter=function(_ENV, letter)
         -- log(letter)
         _letter = letter
+        init(_ENV)
     end,
 })
 
@@ -44,7 +66,7 @@ l_spr_data = {
     {x=1, y=1, w=10, h=14},     --a
     {x=12, y=1, w=10, h=14},    --b
     {x=23, y=1, w=9, h=14},     --c
-    {x=33, y=1, w=11, h=14},    --d
+    {x=33, y=1, w=10, h=14},    --d
     {x=45, y=1, w=9, h=14},     --e
     {x=55, y=1, w=9, h=14},     --f
     {x=65, y=1, w=9, h=14},     --g

@@ -1,32 +1,90 @@
--- g_board_size = 1.5 -- 1: occupies 1/4th of the screen, 2: full screen
 spr_w = 24
 board_pading = 2
 spr_sep = 1
 
 Board=Class:new({
     _letters = {},
+    _current_board = {},
+    _past_board = {},
+    _shaking = true,
+    _shake_rounds = 0,
+    _letters_set = {},
+    _need_to_init = true,
+    _full_screen = false,
+
 
     init=function(_ENV)
         -- log("init board")
         for row=1, 4 do
             for col=1, 4 do
-                add(_letters, Letter:new({_x=(col - 1) * (spr_w + spr_sep) + board_pading, _y=(row - 1) * (spr_w + spr_sep) + board_pading}))
+                -- add(_letters, Letter:new({_x=(col - 1) * (spr_w + spr_sep) + board_pading, _y=(row - 1) * (spr_w + spr_sep) + board_pading}))
+                add(_letters, Letter:new({_row = row, _col = col}))
             end
         end
-        randomize_letters(_ENV)
+        -- randomize_letters(_ENV)
     end,
 
     randomize_letters=function(_ENV)
-        -- log("randomize")
         letter_list = generate_boggle_board()
+        _current_board = letter_list
+        set_letters(_ENV, letter_list) --todo check if necessary
+    end,
+
+    set_letters=function(_ENV, letter_list)
         for i, letter in ipairs(_letters) do
             letter:set_letter(letter_list[i])
         end
     end,
 
+    handle_new=function(_ENV)
+        _shake_rounds = 49
+        _letters_set = {}
+        _last_board = _current_board
+        randomize_letters(_ENV)
+    end,
+
+    handle_last=function(_ENV)
+        _shake_rounds = 49
+        _letters_set = {}
+        _current_board = _last_board
+        _last_board = {}
+        set_letters(_ENV, _current_board)
+    end,
+
     draw=function(_ENV)
         for each in all(_letters) do
-            each:draw()
+            if _full_screen == false then
+                each:draw()
+            else
+                each:draw_fs()
+            end
+        end
+    end,
+
+    update=function(_ENV)
+        if _shake_rounds > 0 then
+            shake_step(_ENV)
+        end
+        res = (_shake_rounds == 1) and 'enable buttons' or 'do nothing'
+        log("res"..res)
+        return res
+    end,
+
+    shake_step=function(_ENV)
+        amount = flr(rnd(#_letters))
+        while amount > 0 do
+            to_set = ceil(rnd(16))
+            if not contains(_letters_set, to_set) then
+                _letters[to_set]:set_letter(rnd(letter_list))
+            end
+            amount -= 1
+        end
+        _shake_rounds -= 1
+        if #_letters_set < 16 and _shake_rounds % 3 == 0 then
+            to_set = ceil(rnd(16))
+            while contains(_letters_set, to_set) do to_set = ceil(rnd(16)) end
+            _letters[to_set]:set_letter(_current_board[to_set])
+            add(_letters_set, to_set)
         end
     end,
 
@@ -34,28 +92,18 @@ Board=Class:new({
 
 
 function generate_boggle_board()
-    -- srand(2)
-    -- grab one random letter per die
     local letters = {}
     for i = 1, #dice_faces do
         add(letters, rnd(dice_faces[i]))
     end
-    -- log("letters")
-    -- for letter in all(letters) do
-    --     log(letter)
-    -- end
 
-    -- shuffle them
     local shuffled = {}
     while #letters > 0 do
         letter = rnd(letters)
         add(shuffled, letter)
         del(letters, letter)
     end
-    -- log("shuffled")
-    -- for l in all(shuffled) do
-    --     log(l)
-    -- end
+
     return shuffled
 end
 
