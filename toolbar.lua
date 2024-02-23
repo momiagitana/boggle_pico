@@ -114,6 +114,8 @@ Toolbar=Class:new({
         res = ''
         if _selected == b_new and _buttons[b_new]._blocked == false then
             _buttons[b_last]._blocked = false
+            handle_stop_btn(_ENV)
+            handle_play_pause_btn(_ENV)
             res = 'new'
         elseif _selected == b_last and _buttons[b_last]._blocked == false then
             _buttons[b_last]._blocked = true
