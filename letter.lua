@@ -1,6 +1,6 @@
 
 Letter=Class:new({
-    _letter = 'A',
+    _letter = 'X',
     _row = 0,
     _col = 0,
     _x = 0,
@@ -14,8 +14,8 @@ Letter=Class:new({
 
     init=function(_ENV)
         --init x,y for small board
-        _x = (_col - 1) * (spr_w + spr_sep) + board_pading
-        _y = (_row - 1) * (spr_w + spr_sep) + board_pading
+        _x = (_col - 1) * (spr_w + spr_sep) + board_pading_sides
+        _y = (_row - 1) * (spr_w + spr_sep) + board_pading_top
         --init x,y for small board
         _full_screen_x = (_col - 1) * 32
         _full_screen_y = (_row - 1) * 32

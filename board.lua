@@ -1,6 +1,7 @@
 spr_w = 24
-board_pading = 2
-spr_sep = 1
+board_pading_sides = 13
+board_pading_top = 4
+spr_sep = 2
 
 Board=Class:new({
     _letters = {},
@@ -11,17 +12,14 @@ Board=Class:new({
     _letters_set = {},
     _need_to_init = true,
     _full_screen = false,
-
+    _has_last = false,
 
     init=function(_ENV)
-        -- log("init board")
         for row=1, 4 do
             for col=1, 4 do
-                -- add(_letters, Letter:new({_x=(col - 1) * (spr_w + spr_sep) + board_pading, _y=(row - 1) * (spr_w + spr_sep) + board_pading}))
                 add(_letters, Letter:new({_row = row, _col = col}))
             end
         end
-        -- randomize_letters(_ENV)
     end,
 
     randomize_letters=function(_ENV)
@@ -40,7 +38,12 @@ Board=Class:new({
         _shake_rounds = 49
         _letters_set = {}
         _last_board = _current_board
+        _has_last = true
         randomize_letters(_ENV)
+    end,
+
+    has_last=function(_ENV)
+        return _has_last
     end,
 
     handle_last=function(_ENV)
@@ -48,6 +51,7 @@ Board=Class:new({
         _letters_set = {}
         _current_board = _last_board
         _last_board = {}
+        _has_last = false
         set_letters(_ENV, _current_board)
     end,
 

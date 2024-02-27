@@ -4,19 +4,24 @@ d_gray = 5
 white = 7
 blue = 1
 yellow = 10
+brown = 4
 red = 8
+salmon = 15
+purple = 2
+orange = 9
 
 ngbr_up = 1
 ngbr_down = 2
 ngbr_left = 3
 ngbr_right = 4
 
+button_h = 8 --has to be equal to the one defined in toolbar --todo: check this
 
 Button=Class:new({
     _x = 0,
     _y = 0,
     _w = 0,
-    _h = 8,
+    _h = button_h,
     _text = "",
     _pressed = false,
     _selected = false,
@@ -24,20 +29,17 @@ Button=Class:new({
     _last_state = false,
     _neighbors = {},
     _init = true,
+    _size = 2,
+    _o_clr = blue,
+    _o_clr_selected = brown,
+    _clr = white,
 
-    init=function(_ENV)
-        _w = get_text_width(_text) + 2
-    end,
 
     draw=function(_ENV)
-        if (_init == true) init(_ENV) _init = false
-        fill_clr = (_blocked == true) and gray or white
-        rectfill(_x, _y, _x+_w, _y+_h, fill_clr)
-        border_clr = (_selected == true) and blue or 9 --todo
-        border_clr = (_blocked == true) and d_gray or border_clr --todo
-        rect(_x, _y, _x+_w, _y+_h, border_clr)
-        txt_clr = (_blocked == true) and d_gray or blue --todo
-        bprint(_text, _x+2, _y+2, txt_clr, 1)
+        border_clr = (_selected == true) and _o_clr_selected or _o_clr
+        border_clr = (_blocked == true) and d_gray or border_clr
+
+        obprint(_text, _x, _y, _clr, border_clr, _size)
     end,
 
     get_neighbor=function (_ENV, dir)
