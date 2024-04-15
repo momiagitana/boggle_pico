@@ -32,6 +32,7 @@ Letter=Class:new({
         palt(2, true)
         sspr(0, 96, 24, 24, _x, _y, 24, 24)
         sspr(_sx, _sy, _sw, _sh, _x + ((24 - _sw) / 2), _y + ((24 - _sh) / 2))
+        -- rspr(_sx, _sy, _x + ((24 - _sw) / 2), _y + ((24 - _sh) / 2), 0, _sw, _sh)
         palt(0, true)
         palt(2, false)
     end,
@@ -51,6 +52,27 @@ Letter=Class:new({
         init(_ENV)
     end,
 })
+
+function rspr(sx,sy,x,y,a,w,h)
+    sw=(w or 1)*8
+    sh=(h or 1)*8
+    x0=flr(0.5*sw)
+    y0=flr(0.5*sh)
+    a=a/360
+    sa=sin(a)
+    ca=cos(a)
+    for ix=sw*-1,sw+4 do
+     for iy=sh*-1,sh+4 do
+      dx=ix-x0
+      dy=iy-y0
+      xx=flr(dx*ca-dy*sa+x0)
+      yy=flr(dx*sa+dy*ca+y0)
+      if (xx>=0 and xx<sw and yy>=0 and yy<=sh-1) then
+       pset(x+ix,y+iy,sget(sx+xx,sy+yy))
+      end
+     end
+    end
+   end
 
 function get_letter_data(letter)
     index = ord(letter) - ord('A') + 1

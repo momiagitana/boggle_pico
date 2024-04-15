@@ -3,6 +3,11 @@ board_pading_sides = 13
 board_pading_top = 4
 spr_sep = 2
 
+first_board = {'S','H','A','x',
+               'x','x','K','E',
+               'x','T','O','x',
+               'P', 'L', 'A', 'Y'}
+
 Board=Class:new({
     _letters = {},
     _current_board = {},
@@ -13,6 +18,7 @@ Board=Class:new({
     _need_to_init = true,
     _full_screen = false,
     _has_last = false,
+    _first_board = true,
 
     init=function(_ENV)
         for row=1, 4 do
@@ -24,6 +30,12 @@ Board=Class:new({
 
     randomize_letters=function(_ENV)
         letter_list = generate_boggle_board()
+        log_table(letter_list)
+        if _first_board == true then
+            letter_list = first_board
+            _first_board = false
+            log_table(letter_list)
+        end
         _current_board = letter_list
         set_letters(_ENV, letter_list) --todo check if necessary
     end,
@@ -70,7 +82,6 @@ Board=Class:new({
             shake_step(_ENV)
         end
         res = (_shake_rounds == 1) and 'enable buttons' or 'do nothing'
-        log("res"..res)
         return res
     end,
 
@@ -96,6 +107,9 @@ Board=Class:new({
 
 
 function generate_boggle_board()
+    dice_faces = dice_faces_esp
+    if (g_lang == "eng") dice_faces = dice_faces_eng
+
     local letters = {}
     for i = 1, #dice_faces do
         add(letters, rnd(dice_faces[i]))
@@ -112,7 +126,7 @@ function generate_boggle_board()
 end
 
 -- coggle arg
-dice_faces = {
+dice_faces_esp = {
     {'P', 'T', 'E', 'A', 'O', 'D'},
     {'B', 'E', 'O', 'Z', 'N', 'L'},
     {'C', 'R', 'E', 'A', 'M', 'A'},
@@ -130,6 +144,27 @@ dice_faces = {
     {'D', 'O', 'I', 'A', 'R', 'T'},
     {'H', 'D', 'E', 'Q', 'S', 'O'},
 }
+
+-- english boggle
+dice_faces_eng = {
+    {'R', 'I', 'F', 'O', 'B', 'X'},
+    {'I', 'F', 'E', 'H', 'E', 'Y'},
+    {'D', 'E', 'N', 'O', 'W', 'S'},
+    {'U', 'T', 'O', 'K', 'N', 'D'},
+    {'H', 'M', 'S', 'R', 'A', 'O'},
+    {'L', 'U', 'P', 'E', 'T', 'S'},
+    {'A', 'C', 'I', 'T', 'O', 'A'},
+    {'Y', 'L', 'G', 'K', 'U', 'E'},
+    {'B', 'M', 'J', 'O', 'A', 'QU'},
+    {'E', 'H', 'I', 'S', 'P', 'N'},
+    {'V', 'E', 'T', 'I', 'G', 'N'},
+    {'B', 'A', 'L', 'I', 'Y', 'T'},
+    {'E', 'Z', 'A', 'V', 'N', 'D'},
+    {'R', 'A', 'L', 'E', 'S', 'C'},
+    {'U', 'W', 'I', 'L', 'R', 'G'},
+    {'P', 'A', 'C', 'E', 'M', 'D'},
+}
+
 
 -- boggle arg by kipo
 -- dice_faces = {
@@ -149,24 +184,4 @@ dice_faces = {
 --     {'S', 'A', 'C', 'E', 'N', 'O'},
 --     {'P', 'O', 'D', 'E', 'T', 'A'},
 --     {'B', 'R', 'A', 'E', 'L', 'A'},
--- }
-
--- english boggle
--- dice_faces = {
---     {'R', 'I', 'F', 'O', 'B', 'X'},
---     {'I', 'F', 'E', 'H', 'E', 'Y'},
---     {'D', 'E', 'N', 'O', 'W', 'S'},
---     {'U', 'T', 'O', 'K', 'N', 'D'},
---     {'H', 'M', 'S', 'R', 'A', 'O'},
---     {'L', 'U', 'P', 'E', 'T', 'S'},
---     {'A', 'C', 'I', 'T', 'O', 'A'},
---     {'Y', 'L', 'G', 'K', 'U', 'E'},
---     {'B', 'M', 'J', 'O', 'A', 'QU'},
---     {'E', 'H', 'I', 'S', 'P', 'N'},
---     {'V', 'E', 'T', 'I', 'G', 'N'},
---     {'B', 'A', 'L', 'I', 'Y', 'T'},
---     {'E', 'Z', 'A', 'V', 'N', 'D'},
---     {'R', 'A', 'L', 'E', 'S', 'C'},
---     {'U', 'W', 'I', 'L', 'R', 'G'},
---     {'P', 'A', 'C', 'E', 'M', 'D'},
 -- }

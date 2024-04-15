@@ -19,8 +19,8 @@ mins_button_w = 15
 tlb_secs_button_x = timer_x - secs_button_w - tlb_padding
 tlb_mins_button_x = tlb_secs_button_x - mins_button_w - tlb_padding
 
-tlb_pl_pa_button_x  = timer_x - pl_pa_st_button_w - tlb_padding - 10
-tlb_stop_button_x   = timer_x - pl_pa_st_button_w - tlb_padding
+tlb_pl_pa_button_x  = timer_x - pl_pa_st_button_w - tlb_padding - 25
+tlb_stop_button_x   = timer_x - pl_pa_st_button_w - tlb_padding - 10
 
 tlb_new_button_x    = tlb_padding + 2
 tlb_last_button_x   = tlb_padding + 35

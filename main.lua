@@ -10,12 +10,30 @@ menuitem(1, "show last board",
     end
 )
 
+
+
+
 function _init()
     log("", true)
     b = Board:new()
     b:init()
     tlb = Toolbar:new()
     tlb:init()
+
+    g_lang = "esp"
+    menuitem(2,(g_lang == "esp") and "language: esp" or "language: eng",function()
+        to_set = "esp"
+        if (g_lang == "esp") to_set = "eng"
+
+        if g_lang != to_set then
+            g_lang = to_set
+            b._need_to_init = true
+        end
+
+        menuitem(nil,(g_lang != "esp") and "language: eng" or "language: esp")
+        return true
+      end)
+
 end
 
 function _draw()
