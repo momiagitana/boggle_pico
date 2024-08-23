@@ -251,6 +251,10 @@ Toolbar=Class:new({
 
     update=function(_ENV)
         if _timer_on == true then
+            if _seconds_left == 0 then
+                sfx(0)
+                _timer_on = false
+            end
             if time() - _last_time > 1  and _seconds_left > 0 then
                 _seconds_left -= 1
                 _last_time = time()
